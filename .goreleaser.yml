@@ -3,7 +3,7 @@ before:
   - make dep
 
 builds:
-  - binary: noisia
+  - binary: golang_test_app
     main: ./cmd
     goarch:
       - amd64
@@ -13,10 +13,10 @@ builds:
       - CGO_ENABLED=0
     ldflags:
       - -a -installsuffix cgo
-      - -X main.appName=noisia -X main.gitTag={{.Tag}} -X main.gitCommit={{.Commit}} -X main.gitBranch={{.Branch}}
+      - -X main.appName=golang_test_app -X main.gitTag={{.Tag}} -X main.gitCommit={{.Commit}} -X main.gitBranch={{.Branch}}
 
 archives:
-  - builds: [noisia]
+  - builds: [golang_test_app]
 
 changelog:
   sort: asc

@@ -8,7 +8,7 @@ import (
 
 var (
 	params BackendParameters
-	err    error
+	// err    error
 )
 
 // GetBackendParameters uses kingpin library for providing parameters via flags or it's env analogues.

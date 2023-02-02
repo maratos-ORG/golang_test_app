@@ -25,5 +25,5 @@ func main() {
 	fmt.Println(*conf.Port)
 	fmt.Println(*conf.DBURL)
 	backend.RunBackend(conf)
-
+	// fuck
 }

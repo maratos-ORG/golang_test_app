@@ -35,3 +35,13 @@ clean: ## Clean before build
 
 build: clean ## Build package
 	@go build -ldflags "-s -w -X main.appName=${APPNAME} -X main.gitTag=${TAG} -X main.gitCommit=${COMMIT} -X main.gitBranch=${BRANCH}'" -o ${BINARY_NAME} ./$(PROJECT_DIR)/...
+
+
+docker-build: ## Build docker image
+	docker build -t boosterkrd/${APPNAME}:${TAG} .
+	docker image prune --force --filter label=stage=intermediate
+	docker tag boosterkrd/${APPNAME}:${TAG} boosterkrd/${APPNAME}:latest
+
+docker-push: ## Push docker image to the registry
+	docker push boosterkrd/${APPNAME}:${TAG}
+	docker push boosterkrd/${APPNAME}:latest

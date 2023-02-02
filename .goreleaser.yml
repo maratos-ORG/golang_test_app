@@ -3,8 +3,8 @@ before:
   - make dep
 
 builds:
-  - binary: golang_test_app
-    main: ./cmd/main.go
+  - binary: noisia
+    main: ./cmd
     goarch:
       - amd64
     goos:
@@ -13,10 +13,10 @@ builds:
       - CGO_ENABLED=0
     ldflags:
       - -a -installsuffix cgo
-      - -X main.appName=golang_test_app -X main.gitTag={{.Tag}} -X main.gitCommit={{.Commit}} -X main.gitBranch={{.Branch}}
+      - -X main.appName=noisia -X main.gitTag={{.Tag}} -X main.gitCommit={{.Commit}} -X main.gitBranch={{.Branch}}
 
 archives:
-  - builds: [golang_test_app]
+  - builds: [noisia]
 
 changelog:
   sort: asc
@@ -27,5 +27,4 @@ nfpms:
     maintainer: Marat Bogatyrev
     description: Command-line admin tool for observing Postgres.
     license: BSD-3
-    formats: [ rpm, deb ]
-    bindir: /usr/local/bin
+    formats: [ deb, rpm ]

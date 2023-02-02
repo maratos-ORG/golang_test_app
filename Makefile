@@ -12,6 +12,7 @@ APPNAME = golang_test_app
 TAG=$(shell git describe --tags |cut -d- -f1)
 COMMIT=$(shell git rev-parse --short HEAD)
 BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
+LDFLAGS = -a -installsuffix cgo -ldflags "-X main.appName=${APPNAME} -X main.gitTag=${TAG} -X main.gitCommit=${COMMIT} -X main.gitBranch=${BRANCH}"
 PROJECT_DIR = cmd
 RELEASE ?= dev
 BINARY_NAME ?= bin/golang_test_app
@@ -33,9 +34,9 @@ linter: ## Apply linter
 clean: ## Clean before build
 	@go clean ./...
 
-build: clean ## Build package
-	@go build -ldflags "-s -w -X main.appName=${APPNAME} -X main.gitTag=${TAG} -X main.gitCommit=${COMMIT} -X main.gitBranch=${BRANCH}'" -o ${BINARY_NAME} ./$(PROJECT_DIR)/...
-
+build: clean dep ## Build
+	mkdir -p ./bin
+	CGO_ENABLED=0 GOOS=linux GOARCH=${GOARCH} go build ${LDFLAGS} -o bin/${APPNAME} ./$(PROJECT_DIR)
 
 docker-build: ## Build docker image
 	docker build -t boosterkrd/${APPNAME}:${TAG} .

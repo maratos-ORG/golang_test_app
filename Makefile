@@ -23,7 +23,7 @@ all: linter test build ## Run linter, tests and build a package
 
 dep: ## Get the dependencies
 	go mod download
-	
+
 test: ## Run tests
 	go test -race -coverprofile=coverage.out ./$(PROJECT_DIR)/...
 
@@ -34,4 +34,4 @@ clean: ## Clean before build
 	@go clean ./...
 
 build: clean ## Build package
-	@go build -ldflags "-s -w -X main.appName=${APPNAME} -X main.gitTag=${TAG} -X main.gitCommit=${COMMIT} -X main.gitBranch=${BRANCH}'" -o ${PROJECT_DIR} ./$(PROJECT_DIR)/...
+	@go build -ldflags "-s -w -X main.appName=${APPNAME} -X main.gitTag=${TAG} -X main.gitCommit=${COMMIT} -X main.gitBranch=${BRANCH}'" -o ${BINARY_NAME} ./$(PROJECT_DIR)/...

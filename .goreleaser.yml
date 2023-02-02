@@ -1,0 +1,31 @@
+before:
+  hooks:
+  - make dep
+
+builds:
+  - binary: golang_test_app
+    main: ./cmd/main.go
+    goarch:
+      - amd64
+    goos:
+      - linux
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -a -installsuffix cgo
+      - -X main.appName=golang_test_app -X main.gitTag={{.Tag}} -X main.gitCommit={{.Commit}} -X main.gitBranch={{.Branch}}
+
+archives:
+  - builds: [golang_test_app]
+
+changelog:
+  sort: asc
+
+nfpms:
+  - vendor: golang_test_app
+    homepage: https://github.com/boosterKRD/golang_test_app
+    maintainer: Marat Bogatyrev
+    description: Command-line admin tool for observing Postgres.
+    license: BSD-3
+    formats: [ rpm, deb ]
+    bindir: /usr/local/bin

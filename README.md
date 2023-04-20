@@ -20,7 +20,10 @@
 * DBAAS_DB_URL="XXX"
 123
 
+<<<<<<< HEAD
 It's good code
 
 
+=======
+>>>>>>> 23738c7 (FUCKOFF)
 This is realy good code

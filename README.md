@@ -19,8 +19,5 @@
 * DBAAS_API_PORT="8080"
 * DBAAS_DB_URL="XXX"
 
-1
-2
-3
 
 It's good code

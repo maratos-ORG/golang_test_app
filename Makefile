@@ -38,6 +38,11 @@ build: clean dep ## Build
 	mkdir -p ./bin
 	CGO_ENABLED=0 GOOS=linux GOARCH=${GOARCH} go build ${LDFLAGS} -o bin/${APPNAME} ./$(PROJECT_DIR)
 
+build_mac: clean dep ## Build
+	mkdir -p ./bin
+	CGO_ENABLED=0 GOOS=darwin GOARCH=${GOARCH} go build ${LDFLAGS} -o bin/${APPNAME} ./$(PROJECT_DIR)
+
+
 docker-build: ## Build docker image
 	docker build -t boosterkrd/${APPNAME}:${TAG} .
 	docker image prune --force --filter label=stage=intermediate

@@ -40,6 +40,7 @@ func Logger() gin.HandlerFunc {
 
 func RunBackend(params *config.BackendParameters) {
 
+	go pinger()
 	gin.SetMode(gin.ReleaseMode)
 	webAPI := gin.New()
 	webAPI.Use(Logger())
@@ -49,6 +50,10 @@ func RunBackend(params *config.BackendParameters) {
 		c.JSON(200, gin.H{
 			"config": params,
 		})
+	})
+
+	webAPI.GET("/getInfo", func(c *gin.Context) {
+		pingHandler(c.Writer, c.Request)
 	})
 	err := webAPI.Run(":" + *params.Port) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 	if err != nil {

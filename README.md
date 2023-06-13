@@ -15,12 +15,13 @@
 * golang_test_app
 
 **Examples ENV:**
-* DBAAS_LOG_LEVEL="INFO"
-* DBAAS_API_PORT="8080"
-* DBAAS_DB_URL="XXX"
+* export DBAAS_LOG_LEVEL="INFO"
+* export DBAAS_API_PORT="8080"
+* export DBAAS_DB_URL="XXX"
 
+HOW run  
+`http://127.0.0.1:8080/config`
+`http://127.0.0.1:8080/getInfo?ip=8.8.8.8`
 
-FIRST
-
-SECOND
-666
+Be aware! Google Chrome does not run simultaneous sessions with the same URI.   
+ `curl "http://127.0.0.1:8080/getInfo?ip=8.8.8.8" & curl "http://127.0.0.1:8080/getInfo?ip=1.1.1.1"`

@@ -20,6 +20,14 @@ BUILD_TIME ?= $(shell date '+%Y-%m-%d_%H:%M:%S')
 COMMIT_HASH = $(shell git rev-parse --short HEAD)
 LINTER_VERSION = v1.50.0
 
+UNAME_S := $(shell uname -s)
+
+ifeq ($(UNAME_S),Darwin)
+    OS := MAC
+else
+    OS := LINUX
+endif
+
 .PHONY: all
 all: linter test build ## Run linter, tests and build a package
 
@@ -41,18 +49,20 @@ linter_mac:
 clean: ## Clean before build
 	@go clean ./...
 
-build: clean dep ## Build
+build: clean dep
 	mkdir -p ./bin
-	CGO_ENABLED=0 GOOS=linux GOARCH=${GOARCH} go build ${LDFLAGS} -o bin/${APPNAME} ./$(PROJECT_DIR)
+	$(MAKE) $(OS)
 
 docker-build: ## Build docker image
 	docker build -t boosterkrd/${APPNAME}:${TAG} .
 	docker image prune --force --filter label=stage=intermediate
 	docker tag boosterkrd/${APPNAME}:${TAG} boosterkrd/${APPNAME}:latest
 
-build_mac: clean dep ## Build
-	mkdir -p ./bin
+MAC:
 	CGO_ENABLED=0 GOOS=darwin GOARCH=${GOARCH} go build ${LDFLAGS} -o bin/${APPNAME} ./$(PROJECT_DIR)
+
+LINUX:
+	CGO_ENABLED=0 GOOS=linux GOARCH=${GOARCH} go build ${LDFLAGS} -o bin/${APPNAME} ./$(PROJECT_DIR)
 
 
 docker-push: ## Push docker image to the registry

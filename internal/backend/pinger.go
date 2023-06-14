@@ -50,7 +50,7 @@ func pingHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("IN LINE")
 		mutex.Unlock()
 		req.wait.Wait()
-		fmt.Fprintln(w, string(req.response))
+		fmt.Fprintln(w, req.response)
 		return
 	}
 
@@ -68,7 +68,7 @@ func pingHandler(w http.ResponseWriter, r *http.Request) {
 	go func() { requests <- req }()
 
 	req.wait.Wait()
-	fmt.Fprintln(w, string(req.response))
+	fmt.Fprintln(w, req.response)
 	mutex.Lock()
 	delete(ips, ip)
 	mutex.Unlock()

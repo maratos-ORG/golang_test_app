@@ -19,6 +19,7 @@
 * export DBAAS_API_PORT="8080"
 * export DBAAS_DB_URL="XXX"
 
+
 HOW run  
 `http://127.0.0.1:8080/config`
 `http://127.0.0.1:8080/getInfo?ip=8.8.8.8`

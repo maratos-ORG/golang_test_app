@@ -1,6 +1,6 @@
 **1.To start realise add tag:**
-* git tag v0.2.1 
-* git push origin v0.2.1 
+* git tag v0.2.2 
+* git push origin v0.2.
 
 **2.To start test just make PR**
 

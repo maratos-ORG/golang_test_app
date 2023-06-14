@@ -23,7 +23,7 @@ changelog:
 
 nfpms:
   - vendor: golang_test_app
-    homepage: https://github.com/boosterKRD/golang_test_app
+    homepage: https://github.com/maratos-ORG/golang_test_app.git
     maintainer: Marat Bogatyrev
     description: Command-line admin tool for observing Postgres.
     license: BSD-3

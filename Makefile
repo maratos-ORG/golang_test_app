@@ -14,11 +14,11 @@ COMMIT=$(shell git rev-parse --short HEAD)
 BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
 LDFLAGS = -a -installsuffix cgo -ldflags "-X main.appName=${APPNAME} -X main.gitTag=${TAG} -X main.gitCommit=${COMMIT} -X main.gitBranch=${BRANCH}"
 PROJECT_DIR = cmd
-INTERNL_GO__DIR = internal
 RELEASE ?= dev
 BINARY_NAME ?= bin/golang_test_app
 BUILD_TIME ?= $(shell date '+%Y-%m-%d_%H:%M:%S')
 COMMIT_HASH = $(shell git rev-parse --short HEAD)
+LINTER_VERSION = v1.50.0
 
 .PHONY: all
 all: linter test build ## Run linter, tests and build a package
@@ -26,13 +26,17 @@ all: linter test build ## Run linter, tests and build a package
 dep: ## Get the dependencies
 	go mod download
 
-
-test:
-	go test -race -coverprofile=coverage1.out ./$(PROJECT_DIR)/...
-	go test -race -coverprofile=coverage2.out ./$(INTERNL_GO__DIR)/...
+test: ## Run tests
+	go test -race -coverprofile=coverage.out ./$(PROJECT_DIR)/...
 
 linter: ## Apply linter
 	golangci-lint run --timeout 5m -E golint -e '(method|func) [a-zA-Z]+ should be [a-zA-Z]+'
+
+linter_mac:
+	brew install golangci-lint
+	# brew link golangci-lint
+	brew upgrade golangci-lint
+	/usr/local/Cellar/golangci-lint/1.53.2/bin/golangci-lint run --timeout 5m -E golint -e '(method|func) [a-zA-Z]+ should be [a-zA-Z]+'
 
 clean: ## Clean before build
 	@go clean ./...
@@ -40,11 +44,6 @@ clean: ## Clean before build
 build: clean dep ## Build
 	mkdir -p ./bin
 	CGO_ENABLED=0 GOOS=linux GOARCH=${GOARCH} go build ${LDFLAGS} -o bin/${APPNAME} ./$(PROJECT_DIR)
-
-build_mac: clean dep ## Build
-	mkdir -p ./bin
-	CGO_ENABLED=0 GOOS=darwin GOARCH=${GOARCH} go build ${LDFLAGS} -o bin/${APPNAME} ./$(PROJECT_DIR)
-
 
 docker-build: ## Build docker image
 	docker build -t boosterkrd/${APPNAME}:${TAG} .

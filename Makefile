@@ -50,6 +50,11 @@ docker-build: ## Build docker image
 	docker image prune --force --filter label=stage=intermediate
 	docker tag boosterkrd/${APPNAME}:${TAG} boosterkrd/${APPNAME}:latest
 
+build_mac: clean dep ## Build
+	mkdir -p ./bin
+	CGO_ENABLED=0 GOOS=darwin GOARCH=${GOARCH} go build ${LDFLAGS} -o bin/${APPNAME} ./$(PROJECT_DIR)
+
+
 docker-push: ## Push docker image to the registry
 	docker push boosterkrd/${APPNAME}:${TAG}
 	docker push boosterkrd/${APPNAME}:latest
